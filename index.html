@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Tanques</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { color: #1a73e8; text-align: center; margin-bottom: 20px; }
+        .tank-section { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .tank-title { font-weight: bold; color: #555; margin-bottom: 10px; display: block; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        input { width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; text-align: center; }
+        label { font-size: 12px; color: #888; display: block; margin-bottom: 5px; }
+        button { width: 100%; padding: 15px; background: #1a73e8; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .results { margin-top: 20px; background: #e8f0fe; padding: 15px; border-radius: 10px; }
+        .res-item { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 18px; }
+        .res-val { font-weight: bold; color: #1a73e8; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Promedio de Tanques</h2>
+    
+    <div class="tank-section">
+        <span class="tank-title">TANQUE 1</span>
+        <div class="grid">
+            <div><label>Nivel</label><input type="number" id="n1" placeholder="0"></div>
+            <div><label>Temp</label><input type="number" id="t1" placeholder="0"></div>
+            <div><label>Pres</label><input type="number" id="p1" placeholder="0"></div>
+        </div>
+    </div>
+
+    <div class="tank-section">
+        <span class="tank-title">TANQUE 2</span>
+        <div class="grid">
+            <div><label>Nivel</label><input type="number" id="n2" placeholder="0"></div>
+            <div><label>Temp</label><input type="number" id="t2" placeholder="0"></div>
+            <div><label>Pres</label><input type="number" id="p2" placeholder="0"></div>
+        </div>
+    </div>
+
+    <div class="tank-section">
+        <span class="tank-title">TANQUE 3</span>
+        <div class="grid">
+            <div><label>Nivel</label><input type="number" id="n3" placeholder="0"></div>
+            <div><label>Temp</label><input type="number" id="t3" placeholder="0"></div>
+            <div><label>Pres</label><input type="number" id="p3" placeholder="0"></div>
+        </div>
+    </div>
+
+    <button onclick="calcular()">CALCULAR PROMEDIOS</button>
+
+    <div class="results" id="output" style="display:none;">
+        <div class="res-item"><span>Nivel Prom:</span> <span class="res-val" id="rn">0</span></div>
+        <div class="res-item"><span>Temp Prom:</span> <span class="res-val" id="rt">0</span></div>
+        <div class="res-item"><span>Pres Prom:</span> <span class="res-val" id="rp">0</span></div>
+    </div>
+</div>
+
+<script>
+    function calcular() {
+        const getV = (id) => parseFloat(document.getElementById(id).value) || 0;
+        
+        const promN = (getV('n1') + getV('n2') + getV('n3')) / 3;
+        const promT = (getV('t1') + getV('t2') + getV('t3')) / 3;
+        const promP = (getV('p1') + getV('p2') + getV('p3')) / 3;
+
+        document.getElementById('rn').innerText = promN.toFixed(2);
+        document.getElementById('rt').innerText = promT.toFixed(2);
+        document.getElementById('rp').innerText = promP.toFixed(2);
+        document.getElementById('output').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
