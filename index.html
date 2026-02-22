@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculadora Tanques Pro</title>
+    <title>Tanques Pro v4</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.cdnfonts.com/css/digital-numbers" rel="stylesheet">
     
@@ -21,9 +21,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
-            
-            /* FONDO PRINCIPAL */
+            padding: 20px;
             background-image: linear-gradient(rgba(0, 32, 91, 0.2), rgba(0, 32, 91, 0.2)), 
                               url('IMG_8927.jpeg');
             background-size: cover;
@@ -33,31 +31,20 @@
             background-color: #001a4d;
         }
 
-        /* CONTENEDOR CON 15% DE OPACIDAD TOTAL */
-        .app-content {
-            width: 100%;
-            max-width: 380px;
-            opacity: 0.15; /* Aquí aplicamos la opacidad del 15% a todo el contenido */
-            transition: opacity 0.3s ease;
-        }
-
-        /* Efecto opcional: cuando tocas la tabla, se aclara un poco para poder ver mejor los datos */
-        .app-content:active, .app-content:focus-within {
-            opacity: 0.9; 
-        }
-
+        /* OPACIDAD AL 85% EN TODO EL CONTENIDO */
         .main-card {
             width: 100%;
+            max-width: 380px;
             border: 2px solid var(--azul-corp);
-            background: rgba(255, 255, 255, 0.9); 
+            background: rgba(255, 255, 255, 0.85); 
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
-        .row { display: flex; border-bottom: 2px solid var(--azul-corp); height: 110px; }
+        .row { display: flex; border-bottom: 2px solid var(--azul-corp); height: 115px; }
         
         .tank-header {
             flex: 1;
@@ -76,7 +63,7 @@
             flex: 1;
             display: flex;
             border-bottom: 1px solid rgba(0, 51, 160, 0.2);
-            background: white;
+            background: rgba(255, 255, 255, 0.5);
         }
 
         input {
@@ -85,11 +72,14 @@
             color: var(--azul-corp); outline: none;
         }
 
+        /* Color de enfoque para saber dónde estamos */
+        input:focus { background: rgba(0, 51, 160, 0.1); }
+
         .labels-column {
             flex: 0.7;
             display: flex;
             flex-direction: column;
-            background: rgba(240, 240, 240, 0.9);
+            background: rgba(240, 240, 240, 0.6);
             border-left: 1px solid var(--azul-corp);
         }
 
@@ -105,7 +95,7 @@
         .results-area {
             display: flex;
             height: 100px;
-            background: #000;
+            background: rgba(0, 0, 0, 0.85);
             border-top: 2px solid var(--azul-corp);
         }
 
@@ -122,7 +112,7 @@
         }
 
         .icon-bar {
-            display: flex; height: 60px; background: white; border-top: 2px solid var(--azul-corp);
+            display: flex; height: 60px; background: rgba(255,255,255,0.85); border-top: 2px solid var(--azul-corp);
         }
 
         .icon-item {
@@ -132,35 +122,24 @@
         }
         
         .icon-item img { width: 35px; height: 35px; }
-
-        .btn-action {
-            width: 100%; margin-top: 20px; padding: 22px; 
-            background: var(--azul-corp); color: white; border: 2px solid white; 
-            border-radius: 15px; font-size: 22px; font-weight: bold;
-            text-transform: uppercase;
-        }
     </style>
 </head>
 <body>
 
-<div class="app-content">
-    <div class="main-card">
-        <div id="tank-container"></div>
+<div class="main-card">
+    <div id="tank-container"></div>
 
-        <div class="results-area">
-            <div class="digital-box" id="rn">0.0</div>
-            <div class="digital-box" id="rp">0.0</div>
-            <div class="digital-box" id="rt">0.0</div>
-        </div>
-
-        <div class="icon-bar">
-            <div class="icon-item">%</div>
-            <div class="icon-item"><img src="https://img.icons8.com/ios-filled/50/FF0000/pressure.png"></div>
-            <div class="icon-item" style="font-size:35px">🌡️</div>
-        </div>
+    <div class="results-area">
+        <div class="digital-box" id="rn">0.0</div>
+        <div class="digital-box" id="rp">0.0</div>
+        <div class="digital-box" id="rt">0.0</div>
     </div>
 
-    <button class="btn-action" onclick="saltar()">Siguiente Celda</button>
+    <div class="icon-bar">
+        <div class="icon-item">%</div>
+        <div class="icon-item"><img src="https://img.icons8.com/ios-filled/50/FF0000/pressure.png"></div>
+        <div class="icon-item" style="font-size:35px">🌡️</div>
+    </div>
 </div>
 
 <script>
@@ -173,9 +152,15 @@
             <div class="row">
                 <div class="tank-header">${tank}</div>
                 <div class="input-group">
-                    <div class="input-cell" style="background:rgba(255,230,230,0.8)"><input type="number" inputmode="decimal" id="n${idx}" placeholder="0"></div>
-                    <div class="input-cell"><input type="number" inputmode="decimal" id="p${idx}" placeholder="0"></div>
-                    <div class="input-cell"><input type="number" inputmode="decimal" id="t${idx}" placeholder="0"></div>
+                    <div class="input-cell" style="background:rgba(255,230,230,0.6)">
+                        <input type="number" inputmode="decimal" id="n${idx}" placeholder="0" enterkeyhint="next">
+                    </div>
+                    <div class="input-cell">
+                        <input type="number" inputmode="decimal" id="p${idx}" placeholder="0" enterkeyhint="next">
+                    </div>
+                    <div class="input-cell">
+                        <input type="number" inputmode="decimal" id="t${idx}" placeholder="0" enterkeyhint="next">
+                    </div>
                 </div>
                 <div class="labels-column">
                     <div class="label-unit">%</div><div class="label-unit">P</div><div class="label-unit">T</div>
@@ -184,21 +169,32 @@
     });
 
     const campos = ['n1', 'p1', 't1', 'n2', 'p2', 't2', 'n3', 'p3', 't3'];
-    campos.forEach(id => {
-        document.getElementById(id).addEventListener('input', () => {
+    
+    campos.forEach((id, index) => {
+        const input = document.getElementById(id);
+
+        // 1. Eliminar automáticamente dato anterior al hacer click (seleccionar todo)
+        input.addEventListener('focus', () => {
+            input.select();
+        });
+
+        // 2. Calcular en tiempo real
+        input.addEventListener('input', () => {
             const v = (id) => parseFloat(document.getElementById(id).value) || 0;
             document.getElementById('rn').innerText = ((v('n1')+v('n2')+v('n3'))/3).toFixed(1);
             document.getElementById('rp').innerText = ((v('p1')+v('p2')+v('p3'))/3).toFixed(1);
             document.getElementById('rt').innerText = ((v('t1')+v('t2')+v('t3'))/3).toFixed(2);
         });
-    });
 
-    function saltar() {
-        const actual = document.activeElement.id;
-        const index = campos.indexOf(actual);
-        const proximo = campos[index + 1] || campos[0];
-        document.getElementById(proximo).focus();
-    }
+        // 3. Pasar a la siguiente celda con la tecla "Enter" / "Siguiente"
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const proximo = campos[index + 1] || campos[0];
+                document.getElementById(proximo).focus();
+            }
+        });
+    });
 </script>
 </body>
 </html>
