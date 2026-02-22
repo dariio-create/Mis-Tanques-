@@ -4,43 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora Tanques</title>
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.cdnfonts.com/css/digital-numbers" rel="stylesheet">
+    
     <style>
         * { box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #fff; margin: 0; padding: 5px; display: flex; flex-direction: column; align-items: center; height: 100vh; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; padding: 10px; 
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1513828583688-c52646db42da?q=80&w=1000');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
         
-        .table-container { border: 2px solid black; width: 100%; max-width: 360px; display: flex; flex-direction: column; }
-        
-        .row { display: flex; border-bottom: 1px solid black; height: 120px; }
-        .tank-label { flex: 1.2; display: flex; align-items: center; justify-content: center; font-size: 45px; font-weight: bold; border-right: 1px solid black; }
-        
+        .table-container { border: 2px solid black; width: 100%; max-width: 360px; background: rgba(255,255,255,0.95); overflow: hidden; }
+        .row { display: flex; border-bottom: 1px solid black; height: 110px; }
+        .tank-label { flex: 1.2; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: bold; border-right: 1px solid black; background: #f0f0f0; }
         .inputs-col { flex: 2; display: flex; flex-direction: column; border-right: 1px solid black; }
-        .input-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #ccc; }
+        .input-wrapper { flex: 1; display: flex; border-bottom: 1px solid #ccc; }
         .input-wrapper:last-child { border-bottom: none; }
-        .bg-red { background-color: #f8d7da; }
+        .bg-red-light { background-color: #f8d7da; }
         
-        input { width: 100%; height: 100%; border: none; background: transparent; text-align: center; font-size: 24px; font-weight: bold; color: #b22222; outline: none; }
-        input:focus { background-color: #fff9c4; } /* Resalta la celda activa */
+        input { width: 100%; border: none; background: transparent; text-align: center; font-size: 24px; font-weight: bold; color: #333; outline: none; }
+        input:focus { background-color: #fff9c4; }
 
-        .units-col { flex: 0.6; display: flex; flex-direction: column; font-weight: bold; font-size: 18px; }
+        .units-col { flex: 0.6; display: flex; flex-direction: column; font-weight: bold; font-size: 16px; background: #f9f9f9; }
         .unit { flex: 1; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #ccc; }
-        .unit:last-child { border-bottom: none; }
 
-        /* Footer de resultados */
-        .footer { display: flex; border-bottom: 1px solid black; height: 60px; }
-        .res-box { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; border-right: 1px solid black; text-decoration: underline; }
-        .res-box:last-child { border-right: none; }
-        .res-nivel { background-color: #d4edda; color: #155724; }
-        .res-presion { background-color: #d1ecf1; color: #0c5460; }
-        .res-temp { background-color: #fff3cd; color: #856404; }
-        
-        /* Iconos */
-        .icon-row { display: flex; height: 50px; }
-        .icon-box { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 24px; border-right: 1px solid black; }
-        .icon-box:last-child { border-right: none; }
+        /* RESULTADOS DIGITALES ROJOS */
+        .footer { display: flex; border-top: 1px solid black; height: 70px; background: #000; }
+        .res-box { 
+            flex: 1; display: flex; align-items: center; justify-content: center; 
+            font-family: 'Digital Numbers', sans-serif; 
+            font-size: 26px; color: #ff0000; text-shadow: 0 0 10px #ff0000;
+            border-right: 1px solid #333; 
+        }
 
-        /* Botón Siguiente */
-        .btn-next { width: 100%; max-width: 360px; margin-top: 15px; padding: 15px; background: #2b61bd; color: white; border: none; border-radius: 8px; font-size: 20px; font-weight: bold; text-transform: uppercase; box-shadow: 0 4px #1a3d7a; }
-        .btn-next:active { box-shadow: 0 2px #1a3d7a; transform: translateY(2px); }
+        /* ICONOS ACTUALIZADOS */
+        .icon-row { display: flex; height: 60px; background: #f0f0f0; border-top: 1px solid black; }
+        .icon-box { flex: 1; display: flex; align-items: center; justify-content: center; border-right: 1px solid black; }
+        .icon-box img { width: 35px; height: 35px; }
+        .icon-text { font-size: 28px; font-weight: bold; color: #b22222; }
+
+        .btn-next { 
+            width: 100%; max-width: 360px; margin-top: 15px; padding: 20px; 
+            background: #2b61bd; color: white; border: none; border-radius: 12px; 
+            font-size: 20px; font-weight: bold; text-transform: uppercase; 
+            box-shadow: 0 5px #1a3d7a; cursor: pointer;
+        }
+        .btn-next:active { box-shadow: 0 2px #1a3d7a; transform: translateY(3px); }
     </style>
 </head>
 <body>
@@ -49,46 +62,41 @@
     <div class="row">
         <div class="tank-label">T-1</div>
         <div class="inputs-col">
-            <div class="input-wrapper bg-red"><input type="number" inputmode="decimal" id="n1" placeholder="0"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p1" placeholder="0" style="color:black"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t1" placeholder="0" style="color:black"></div>
+            <div class="input-wrapper bg-red-light"><input type="number" inputmode="decimal" id="n1" placeholder="0"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p1" placeholder="0"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t1" placeholder="0"></div>
         </div>
-        <div class="units-col">
-            <div class="unit">%</div><div class="unit">P</div><div class="unit">T</div>
-        </div>
+        <div class="units-col"><div class="unit">%</div><div class="unit">P</div><div class="unit">T</div></div>
     </div>
     <div class="row">
         <div class="tank-label">T-2</div>
         <div class="inputs-col">
-            <div class="input-wrapper bg-red"><input type="number" inputmode="decimal" id="n2" placeholder="0"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p2" placeholder="0" style="color:black"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t2" placeholder="0" style="color:black"></div>
+            <div class="input-wrapper bg-red-light"><input type="number" inputmode="decimal" id="n2" placeholder="0"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p2" placeholder="0"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t2" placeholder="0"></div>
         </div>
-        <div class="units-col">
-            <div class="unit">%</div><div class="unit">P</div><div class="unit">T</div>
-        </div>
+        <div class="units-col"><div class="unit">%</div><div class="unit">P</div><div class="unit">T</div></div>
     </div>
-    <div class="row" style="border-bottom: 2px solid black;">
+    <div class="row">
         <div class="tank-label">T-3</div>
         <div class="inputs-col">
-            <div class="input-wrapper bg-red"><input type="number" inputmode="decimal" id="n3" placeholder="0"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p3" placeholder="0" style="color:black"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t3" placeholder="0" style="color:black"></div>
+            <div class="input-wrapper bg-red-light"><input type="number" inputmode="decimal" id="n3" placeholder="0"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p3" placeholder="0"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t3" placeholder="0"></div>
         </div>
-        <div class="units-col">
-            <div class="unit">%</div><div class="unit">P</div><div class="unit">T</div>
-        </div>
+        <div class="units-col"><div class="unit">%</div><div class="unit">P</div><div class="unit">T</div></div>
     </div>
 
     <div class="footer">
-        <div class="res-box res-nivel" id="rn">0.0</div>
-        <div class="res-box res-presion" id="rp">0.0</div>
-        <div class="res-box res-temp" id="rt">0.0</div>
+        <div class="res-box" id="rn">0.0</div>
+        <div class="res-box" id="rp">0.0</div>
+        <div class="res-box" id="rt">0.0</div>
     </div>
+    
     <div class="icon-row">
-        <div class="icon-box res-nivel">⭕</div>
-        <div class="icon-box res-presion">⚙️</div>
-        <div class="icon-box res-temp">🌡️</div>
+        <div class="icon-box"><span class="icon-text">%</span></div>
+        <div class="icon-box"><img src="https://img.icons8.com/ios-filled/50/000000/pressure.png" alt="Presión"></div>
+        <div class="icon-box">🌡️</div>
     </div>
 </div>
 
@@ -96,35 +104,21 @@
 
 <script>
     const inputs = ['n1', 'p1', 't1', 'n2', 'p2', 't2', 'n3', 'p3', 't3'];
-    
-    // Escuchar cambios para calcular automáticamente
-    inputs.forEach(id => {
-        document.getElementById(id).addEventListener('input', calcular);
-    });
+    inputs.forEach(id => document.getElementById(id).addEventListener('input', calcular));
 
     function calcular() {
         const getV = (id) => parseFloat(document.getElementById(id).value) || 0;
-        
-        const promN = (getV('n1') + getV('n2') + getV('n3')) / 3;
-        const promP = (getV('p1') + getV('p2') + getV('p3')) / 3;
-        const promT = (getV('t1') + getV('t2') + getV('t3')) / 3;
-
-        document.getElementById('rn').innerText = promN.toFixed(1);
-        document.getElementById('rp').innerText = promP.toFixed(1);
-        document.getElementById('rt').innerText = promT.toFixed(2);
+        document.getElementById('rn').innerText = ((getV('n1') + getV('n2') + getV('n3')) / 3).toFixed(1);
+        document.getElementById('rp').innerText = ((getV('p1') + getV('p2') + getV('p3')) / 3).toFixed(1);
+        document.getElementById('rt').innerText = ((getV('t1') + getV('t2') + getV('t3')) / 3).toFixed(2);
     }
 
     function siguienteCelda() {
         const activo = document.activeElement.id;
         const index = inputs.indexOf(activo);
-        
-        if (index > -1 && index < inputs.length - 1) {
-            document.getElementById(inputs[index + 1]).focus();
-        } else {
-            document.getElementById(inputs[0]).focus(); // Reiniciar al primero
-        }
+        const next = inputs[index + 1] || inputs[0];
+        document.getElementById(next).focus();
     }
 </script>
-
 </body>
 </html>
