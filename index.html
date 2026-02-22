@@ -3,91 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cálculo de Tanques</title>
+    <title>Calculadora Tanques</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #fff; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        .table-container { border: 2px solid black; width: 100%; max-width: 350px; border-collapse: collapse; }
-        .row { display: flex; border-bottom: 1px solid #ccc; }
-        .cell { flex: 1; border-right: 1px solid #ccc; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        .cell:last-child { border-right: none; }
-        .tank-label { font-size: 40px; font-weight: bold; }
-        .unit-label { font-weight: bold; font-size: 20px; }
+        * { box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #fff; margin: 0; padding: 5px; display: flex; flex-direction: column; align-items: center; height: 100vh; }
         
-        /* Inputs con teclado numérico estricto */
-        input { width: 80%; border: none; font-size: 24px; text-align: center; color: #b22222; background: transparent; outline: none; }
+        .table-container { border: 2px solid black; width: 100%; max-width: 360px; display: flex; flex-direction: column; }
+        
+        .row { display: flex; border-bottom: 1px solid black; height: 120px; }
+        .tank-label { flex: 1.2; display: flex; align-items: center; justify-content: center; font-size: 45px; font-weight: bold; border-right: 1px solid black; }
+        
+        .inputs-col { flex: 2; display: flex; flex-direction: column; border-right: 1px solid black; }
+        .input-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #ccc; }
+        .input-wrapper:last-child { border-bottom: none; }
         .bg-red { background-color: #f8d7da; }
         
+        input { width: 100%; height: 100%; border: none; background: transparent; text-align: center; font-size: 24px; font-weight: bold; color: #b22222; outline: none; }
+        input:focus { background-color: #fff9c4; } /* Resalta la celda activa */
+
+        .units-col { flex: 0.6; display: flex; flex-direction: column; font-weight: bold; font-size: 18px; }
+        .unit { flex: 1; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #ccc; }
+        .unit:last-child { border-bottom: none; }
+
         /* Footer de resultados */
-        .footer { display: flex; border-top: 2px solid black; }
-        .res-box { flex: 1; padding: 15px 5px; text-align: center; font-size: 24px; font-weight: bold; text-decoration: underline; }
+        .footer { display: flex; border-bottom: 1px solid black; height: 60px; }
+        .res-box { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; border-right: 1px solid black; text-decoration: underline; }
+        .res-box:last-child { border-right: none; }
         .res-nivel { background-color: #d4edda; color: #155724; }
         .res-presion { background-color: #d1ecf1; color: #0c5460; }
         .res-temp { background-color: #fff3cd; color: #856404; }
         
-        .icon-row { display: flex; border-top: 1px solid black; }
-        .icon-box { flex: 1; text-align: center; padding: 5px; font-size: 25px; }
+        /* Iconos */
+        .icon-row { display: flex; height: 50px; }
+        .icon-box { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 24px; border-right: 1px solid black; }
+        .icon-box:last-child { border-right: none; }
+
+        /* Botón Siguiente */
+        .btn-next { width: 100%; max-width: 360px; margin-top: 15px; padding: 15px; background: #2b61bd; color: white; border: none; border-radius: 8px; font-size: 20px; font-weight: bold; text-transform: uppercase; box-shadow: 0 4px #1a3d7a; }
+        .btn-next:active { box-shadow: 0 2px #1a3d7a; transform: translateY(2px); }
     </style>
 </head>
 <body>
 
 <div class="table-container">
-    <div class="row" style="height: 150px;">
-        <div class="cell tank-label" style="flex: 1.5;">T-1</div>
-        <div class="cell" style="flex: 2;">
-            <div class="cell bg-red" style="width:100%; height:33%; border-bottom:1px solid #ccc">
-                <input type="number" inputmode="decimal" id="n1" oninput="calcular()" placeholder="0">
-            </div>
-            <div class="cell" style="width:100%; height:33%; border-bottom:1px solid #ccc">
-                <input type="number" inputmode="decimal" id="p1" oninput="calcular()" placeholder="0" style="color:black">
-            </div>
-            <div class="cell" style="width:100%; height:33%">
-                <input type="number" inputmode="decimal" id="t1" oninput="calcular()" placeholder="0" style="color:black">
-            </div>
+    <div class="row">
+        <div class="tank-label">T-1</div>
+        <div class="inputs-col">
+            <div class="input-wrapper bg-red"><input type="number" inputmode="decimal" id="n1" placeholder="0"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p1" placeholder="0" style="color:black"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t1" placeholder="0" style="color:black"></div>
         </div>
-        <div class="cell unit-label" style="flex: 0.8;">
-            <div style="height:33%; padding-top:10px">%</div>
-            <div style="height:33%; padding-top:10px">P</div>
-            <div style="height:33%; padding-top:10px">T</div>
+        <div class="units-col">
+            <div class="unit">%</div><div class="unit">P</div><div class="unit">T</div>
         </div>
     </div>
-
-    <div class="row" style="height: 150px;">
-        <div class="cell tank-label" style="flex: 1.5;">T-2</div>
-        <div class="cell" style="flex: 2;">
-            <div class="cell bg-red" style="width:100%; height:33%; border-bottom:1px solid #ccc">
-                <input type="number" inputmode="decimal" id="n2" oninput="calcular()" placeholder="0">
-            </div>
-            <div class="cell" style="width:100%; height:33%; border-bottom:1px solid #ccc">
-                <input type="number" inputmode="decimal" id="p2" oninput="calcular()" placeholder="0" style="color:black">
-            </div>
-            <div class="cell" style="width:100%; height:33%">
-                <input type="number" inputmode="decimal" id="t2" oninput="calcular()" placeholder="0" style="color:black">
-            </div>
+    <div class="row">
+        <div class="tank-label">T-2</div>
+        <div class="inputs-col">
+            <div class="input-wrapper bg-red"><input type="number" inputmode="decimal" id="n2" placeholder="0"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p2" placeholder="0" style="color:black"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t2" placeholder="0" style="color:black"></div>
         </div>
-        <div class="cell unit-label" style="flex: 0.8;">
-            <div style="height:33%; padding-top:10px">%</div>
-            <div style="height:33%; padding-top:10px">P</div>
-            <div style="height:33%; padding-top:10px">T</div>
+        <div class="units-col">
+            <div class="unit">%</div><div class="unit">P</div><div class="unit">T</div>
         </div>
     </div>
-
-    <div class="row" style="height: 150px;">
-        <div class="cell tank-label" style="flex: 1.5;">T-3</div>
-        <div class="cell" style="flex: 2;">
-            <div class="cell bg-red" style="width:100%; height:33%; border-bottom:1px solid #ccc">
-                <input type="number" inputmode="decimal" id="n3" oninput="calcular()" placeholder="0">
-            </div>
-            <div class="cell" style="width:100%; height:33%; border-bottom:1px solid #ccc">
-                <input type="number" inputmode="decimal" id="p3" oninput="calcular()" placeholder="0" style="color:black">
-            </div>
-            <div class="cell" style="width:100%; height:33%">
-                <input type="number" inputmode="decimal" id="t3" oninput="calcular()" placeholder="0" style="color:black">
-            </div>
+    <div class="row" style="border-bottom: 2px solid black;">
+        <div class="tank-label">T-3</div>
+        <div class="inputs-col">
+            <div class="input-wrapper bg-red"><input type="number" inputmode="decimal" id="n3" placeholder="0"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p3" placeholder="0" style="color:black"></div>
+            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t3" placeholder="0" style="color:black"></div>
         </div>
-        <div class="cell unit-label" style="flex: 0.8;">
-            <div style="height:33%; padding-top:10px">%</div>
-            <div style="height:33%; padding-top:10px">P</div>
-            <div style="height:33%; padding-top:10px">T</div>
+        <div class="units-col">
+            <div class="unit">%</div><div class="unit">P</div><div class="unit">T</div>
         </div>
     </div>
 
@@ -96,7 +85,6 @@
         <div class="res-box res-presion" id="rp">0.0</div>
         <div class="res-box res-temp" id="rt">0.0</div>
     </div>
-    
     <div class="icon-row">
         <div class="icon-box res-nivel">⭕</div>
         <div class="icon-box res-presion">⚙️</div>
@@ -104,7 +92,16 @@
     </div>
 </div>
 
+<button class="btn-next" onclick="siguienteCelda()">Siguiente Celda</button>
+
 <script>
+    const inputs = ['n1', 'p1', 't1', 'n2', 'p2', 't2', 'n3', 'p3', 't3'];
+    
+    // Escuchar cambios para calcular automáticamente
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', calcular);
+    });
+
     function calcular() {
         const getV = (id) => parseFloat(document.getElementById(id).value) || 0;
         
@@ -115,6 +112,17 @@
         document.getElementById('rn').innerText = promN.toFixed(1);
         document.getElementById('rp').innerText = promP.toFixed(1);
         document.getElementById('rt').innerText = promT.toFixed(2);
+    }
+
+    function siguienteCelda() {
+        const activo = document.activeElement.id;
+        const index = inputs.indexOf(activo);
+        
+        if (index > -1 && index < inputs.length - 1) {
+            document.getElementById(inputs[index + 1]).focus();
+        } else {
+            document.getElementById(inputs[0]).focus(); // Reiniciar al primero
+        }
     }
 </script>
 
