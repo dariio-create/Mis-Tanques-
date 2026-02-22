@@ -3,57 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculadora Tanques</title>
+    <title>Calculadora Tanques Pro</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.cdnfonts.com/css/digital-numbers" rel="stylesheet">
     
     <style>
         * { box-sizing: border-box; }
         body { 
-            font-family: Arial, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; padding: 10px; 
             display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                        url('https://images.unsplash.com/photo-1513828583688-c52646db42da?q=80&w=1000');
+            /* Imagen de fondo que anexaste */
+            background: linear-gradient(rgba(0, 32, 91, 0.4), rgba(0, 32, 91, 0.4)), 
+                        url('https://r.jina.ai/i/9e006696700c406981882d2777f52554');
             background-size: cover; background-position: center; background-attachment: fixed;
         }
         
-        .table-container { border: 2px solid black; width: 100%; max-width: 360px; background: rgba(255,255,255,0.95); overflow: hidden; }
-        .row { display: flex; border-bottom: 1px solid black; height: 110px; }
-        .tank-label { flex: 1.2; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: bold; border-right: 1px solid black; background: #f0f0f0; }
-        .inputs-col { flex: 2; display: flex; flex-direction: column; border-right: 1px solid black; }
-        .input-wrapper { flex: 1; display: flex; border-bottom: 1px solid #ccc; }
+        .table-container { 
+            border: 3px solid #00205B; /* Azul Empresa */
+            width: 100%; max-width: 360px; 
+            background: rgba(255, 255, 255, 0.9); 
+            border-radius: 8px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .row { display: flex; border-bottom: 2px solid #00205B; height: 110px; }
+        .tank-label { 
+            flex: 1.2; display: flex; align-items: center; justify-content: center; 
+            font-size: 42px; font-weight: bold; color: #00205B;
+            border-right: 2px solid #00205B; background: #fff; 
+        }
+
+        .inputs-col { flex: 2; display: flex; flex-direction: column; border-right: 2px solid #00205B; }
+        .input-wrapper { flex: 1; display: flex; border-bottom: 1px solid #00205B; background: #fff; }
         .input-wrapper:last-child { border-bottom: none; }
-        .bg-red-light { background-color: #f8d7da; }
+        .bg-red-soft { background-color: #ffebee; } /* Rojo muy suave para entrada */
         
-        input { width: 100%; border: none; background: transparent; text-align: center; font-size: 24px; font-weight: bold; color: #333; outline: none; }
-        input:focus { background-color: #fff9c4; }
+        input { 
+            width: 100%; border: none; background: transparent; 
+            text-align: center; font-size: 26px; font-weight: bold; 
+            color: #00205B; outline: none; 
+        }
+        input:focus { background-color: #e3f2fd; border: 1px solid #ff0000; }
 
-        .units-col { flex: 0.6; display: flex; flex-direction: column; font-weight: bold; font-size: 16px; background: #f9f9f9; }
-        .unit { flex: 1; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #ccc; }
+        .units-col { flex: 0.6; display: flex; flex-direction: column; font-weight: bold; font-size: 18px; color: #00205B; background: #f0f0f0; }
+        .unit { flex: 1; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #00205B; }
 
-        /* RESULTADOS DIGITALES ROJOS */
-        .footer { display: flex; border-top: 1px solid black; height: 70px; background: #000; }
+        /* RESULTADOS DIGITALES (10% más grandes, fondo 15% difuminado) */
+        .footer { display: flex; border-top: 1px solid #00205B; height: 85px; background: rgba(0, 0, 0, 0.85); }
         .res-box { 
             flex: 1; display: flex; align-items: center; justify-content: center; 
             font-family: 'Digital Numbers', sans-serif; 
-            font-size: 26px; color: #ff0000; text-shadow: 0 0 10px #ff0000;
+            font-size: 32px; /* 10% más grande */
+            color: #ff0000; text-shadow: 0 0 15px #ff0000;
             border-right: 1px solid #333; 
         }
 
         /* ICONOS ACTUALIZADOS */
-        .icon-row { display: flex; height: 60px; background: #f0f0f0; border-top: 1px solid black; }
-        .icon-box { flex: 1; display: flex; align-items: center; justify-content: center; border-right: 1px solid black; }
-        .icon-box img { width: 35px; height: 35px; }
-        .icon-text { font-size: 28px; font-weight: bold; color: #b22222; }
+        .icon-row { display: flex; height: 60px; background: #fff; border-top: 2px solid #00205B; }
+        .icon-box { flex: 1; display: flex; align-items: center; justify-content: center; border-right: 2px solid #00205B; }
+        .icon-box img { width: 38px; height: 38px; }
+        .icon-text { font-size: 30px; font-weight: bold; color: #ff0000; }
 
         .btn-next { 
             width: 100%; max-width: 360px; margin-top: 15px; padding: 20px; 
-            background: #2b61bd; color: white; border: none; border-radius: 12px; 
-            font-size: 20px; font-weight: bold; text-transform: uppercase; 
-            box-shadow: 0 5px #1a3d7a; cursor: pointer;
+            background: #00205B; color: white; border: 2px solid #fff; border-radius: 12px; 
+            font-size: 22px; font-weight: bold; text-transform: uppercase; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .btn-next:active { box-shadow: 0 2px #1a3d7a; transform: translateY(3px); }
+        .btn-next:active { transform: translateY(3px); box-shadow: 0 2px #000; }
     </style>
 </head>
 <body>
@@ -62,7 +80,7 @@
     <div class="row">
         <div class="tank-label">T-1</div>
         <div class="inputs-col">
-            <div class="input-wrapper bg-red-light"><input type="number" inputmode="decimal" id="n1" placeholder="0"></div>
+            <div class="input-wrapper bg-red-soft"><input type="number" inputmode="decimal" id="n1" placeholder="0"></div>
             <div class="input-wrapper"><input type="number" inputmode="decimal" id="p1" placeholder="0"></div>
             <div class="input-wrapper"><input type="number" inputmode="decimal" id="t1" placeholder="0"></div>
         </div>
@@ -71,7 +89,7 @@
     <div class="row">
         <div class="tank-label">T-2</div>
         <div class="inputs-col">
-            <div class="input-wrapper bg-red-light"><input type="number" inputmode="decimal" id="n2" placeholder="0"></div>
+            <div class="input-wrapper bg-red-soft"><input type="number" inputmode="decimal" id="n2" placeholder="0"></div>
             <div class="input-wrapper"><input type="number" inputmode="decimal" id="p2" placeholder="0"></div>
             <div class="input-wrapper"><input type="number" inputmode="decimal" id="t2" placeholder="0"></div>
         </div>
@@ -80,7 +98,7 @@
     <div class="row">
         <div class="tank-label">T-3</div>
         <div class="inputs-col">
-            <div class="input-wrapper bg-red-light"><input type="number" inputmode="decimal" id="n3" placeholder="0"></div>
+            <div class="input-wrapper bg-red-soft"><input type="number" inputmode="decimal" id="n3" placeholder="0"></div>
             <div class="input-wrapper"><input type="number" inputmode="decimal" id="p3" placeholder="0"></div>
             <div class="input-wrapper"><input type="number" inputmode="decimal" id="t3" placeholder="0"></div>
         </div>
@@ -95,28 +113,28 @@
     
     <div class="icon-row">
         <div class="icon-box"><span class="icon-text">%</span></div>
-        <div class="icon-box"><img src="https://img.icons8.com/ios-filled/50/000000/pressure.png" alt="Presión"></div>
-        <div class="icon-box">🌡️</div>
+        <div class="icon-box"><img src="https://img.icons8.com/ios-filled/50/00205B/pressure.png"></div>
+        <div class="icon-box" style="font-size:30px">🌡️</div>
     </div>
 </div>
 
 <button class="btn-next" onclick="siguienteCelda()">Siguiente Celda</button>
 
 <script>
-    const inputs = ['n1', 'p1', 't1', 'n2', 'p2', 't2', 'n3', 'p3', 't3'];
-    inputs.forEach(id => document.getElementById(id).addEventListener('input', calcular));
+    const ids = ['n1', 'p1', 't1', 'n2', 'p2', 't2', 'n3', 'p3', 't3'];
+    ids.forEach(id => document.getElementById(id).addEventListener('input', calcular));
 
     function calcular() {
-        const getV = (id) => parseFloat(document.getElementById(id).value) || 0;
-        document.getElementById('rn').innerText = ((getV('n1') + getV('n2') + getV('n3')) / 3).toFixed(1);
-        document.getElementById('rp').innerText = ((getV('p1') + getV('p2') + getV('p3')) / 3).toFixed(1);
-        document.getElementById('rt').innerText = ((getV('t1') + getV('t2') + getV('t3')) / 3).toFixed(2);
+        const v = (id) => parseFloat(document.getElementById(id).value) || 0;
+        document.getElementById('rn').innerText = ((v('n1')+v('n2')+v('n3'))/3).toFixed(1);
+        document.getElementById('rp').innerText = ((v('p1')+v('p2')+v('p3'))/3).toFixed(1);
+        document.getElementById('rt').innerText = ((v('t1')+v('t2')+v('t3'))/3).toFixed(2);
     }
 
     function siguienteCelda() {
         const activo = document.activeElement.id;
-        const index = inputs.indexOf(activo);
-        const next = inputs[index + 1] || inputs[0];
+        const index = ids.indexOf(activo);
+        const next = ids[index + 1] || ids[0];
         document.getElementById(next).focus();
     }
 </script>
