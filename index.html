@@ -9,7 +9,7 @@
     
     <style>
         :root {
-            --azul-corp: #0033A0; /* Azul fuerte estándar */
+            --azul-corp: #0033A0;
             --rojo-brillante: #FF0000;
             --blanco: #FFFFFF;
         }
@@ -24,28 +24,29 @@
             align-items: center;
             justify-content: flex-start;
             padding: 10px;
-            /* Imagen de fondo con capa azulada */
-            background: linear-gradient(rgba(0, 51, 160, 0.3), rgba(0, 51, 160, 0.3)), 
+            /* TU FOTO DE FONDO AQUÍ */
+            background: linear-gradient(rgba(0, 51, 160, 0.2), rgba(0, 51, 160, 0.2)), 
                         url('https://r.jina.ai/i/9e006696700c406981882d2777f52554');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
         }
 
         .main-card {
             width: 100%;
             max-width: 380px;
             border: 3px solid var(--azul-corp);
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.85); /* 15% difuminado para ver el fondo */
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px); /* Efecto de cristal empañado */
         }
 
-        /* Filas de Tanques */
         .row {
             display: flex;
             border-bottom: 2px solid var(--azul-corp);
-            height: 115px;
+            height: 110px;
         }
 
         .tank-header {
@@ -68,13 +69,13 @@
         .input-cell {
             flex: 1;
             display: flex;
-            border-bottom: 1px solid #ddd;
-            background: white;
+            border-bottom: 1px solid rgba(0, 51, 160, 0.3);
+            background: rgba(255, 255, 255, 0.7);
         }
 
         .input-cell:last-child { border-bottom: none; }
 
-        .bg-rojo-claro { background-color: #fff1f1; }
+        .bg-rojo-claro { background-color: rgba(255, 241, 241, 0.8); }
 
         input {
             width: 100%;
@@ -87,13 +88,11 @@
             outline: none;
         }
 
-        input:focus { background-color: #eef4ff; }
-
         .labels-column {
             flex: 0.7;
             display: flex;
             flex-direction: column;
-            background: #f8f9fa;
+            background: rgba(248, 249, 250, 0.8);
             border-left: 1px solid var(--azul-corp);
         }
 
@@ -105,14 +104,14 @@
             font-weight: bold;
             font-size: 18px;
             color: var(--azul-corp);
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid rgba(0, 51, 160, 0.2);
         }
 
-        /* SECCIÓN DE RESULTADOS (Difuminado 15%) */
+        /* SECCIÓN DE RESULTADOS DIGITALES ROJOS */
         .results-area {
             display: flex;
-            height: 90px;
-            background: rgba(0, 0, 0, 0.85); /* Fondo oscuro con 15% de transparencia real */
+            height: 95px;
+            background: rgba(0, 0, 0, 0.85); /* Fondo negro difuminado */
             border-top: 2px solid var(--azul-corp);
         }
 
@@ -122,17 +121,16 @@
             align-items: center;
             justify-content: center;
             font-family: 'Digital Numbers', sans-serif;
-            font-size: 34px; /* Tamaño aumentado */
+            font-size: 36px; /* 10% más grande */
             color: var(--rojo-brillante);
-            text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
+            text-shadow: 0 0 12px var(--rojo-brillante);
             border-right: 1px solid #444;
         }
 
-        /* Iconos inferiores */
         .icon-bar {
             display: flex;
             height: 55px;
-            background: var(--blanco);
+            background: white;
             border-top: 2px solid var(--azul-corp);
         }
 
@@ -149,12 +147,11 @@
 
         .icon-item img { width: 32px; height: 32px; }
 
-        /* Botón Siguiente */
         .btn-action {
             width: 100%;
             max-width: 380px;
             margin-top: 15px;
-            padding: 22px;
+            padding: 20px;
             background: var(--azul-corp);
             color: white;
             border: 2px solid white;
@@ -162,50 +159,31 @@
             font-size: 22px;
             font-weight: bold;
             text-transform: uppercase;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
-
-        .btn-action:active { transform: translateY(4px); box-shadow: 0 2px #000; }
     </style>
 </head>
 <body>
 
 <div class="main-card">
-    <div class="row">
-        <div class="tank-header">T-1</div>
-        <div class="input-group">
-            <div class="input-cell bg-rojo-claro"><input type="number" inputmode="decimal" id="n1" placeholder="0"></div>
-            <div class="input-cell"><input type="number" inputmode="decimal" id="p1" placeholder="0"></div>
-            <div class="input-cell"><input type="number" inputmode="decimal" id="t1" placeholder="0"></div>
-        </div>
-        <div class="labels-column">
-            <div class="label-unit">%</div><div class="label-unit">P</div><div class="label-unit">T</div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="tank-header">T-2</div>
-        <div class="input-group">
-            <div class="input-cell bg-rojo-claro"><input type="number" inputmode="decimal" id="n2" placeholder="0"></div>
-            <div class="input-cell"><input type="number" inputmode="decimal" id="p2" placeholder="0"></div>
-            <div class="input-cell"><input type="number" inputmode="decimal" id="t2" placeholder="0"></div>
-        </div>
-        <div class="labels-column">
-            <div class="label-unit">%</div><div class="label-unit">P</div><div class="label-unit">T</div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="tank-header">T-3</div>
-        <div class="input-group">
-            <div class="input-cell bg-rojo-claro"><input type="number" inputmode="decimal" id="n3" placeholder="0"></div>
-            <div class="input-cell"><input type="number" inputmode="decimal" id="p3" placeholder="0"></div>
-            <div class="input-cell"><input type="number" inputmode="decimal" id="t3" placeholder="0"></div>
-        </div>
-        <div class="labels-column">
-            <div class="label-unit">%</div><div class="label-unit">P</div><div class="label-unit">T</div>
-        </div>
-    </div>
+    <script>
+        const tanks = ["T-1", "T-2", "T-3"];
+        tanks.forEach((tank, i) => {
+            const idx = i + 1;
+            document.write(`
+                <div class="row">
+                    <div class="tank-header">${tank}</div>
+                    <div class="input-group">
+                        <div class="input-cell bg-rojo-claro"><input type="number" inputmode="decimal" id="n${idx}" placeholder="0"></div>
+                        <div class="input-cell"><input type="number" inputmode="decimal" id="p${idx}" placeholder="0"></div>
+                        <div class="input-cell"><input type="number" inputmode="decimal" id="t${idx}" placeholder="0"></div>
+                    </div>
+                    <div class="labels-column">
+                        <div class="label-unit">%</div><div class="label-unit">P</div><div class="label-unit">T</div>
+                    </div>
+                </div>
+            `);
+        });
+    </script>
 
     <div class="results-area">
         <div class="digital-box" id="rn">0.0</div>
@@ -224,14 +202,14 @@
 
 <script>
     const campos = ['n1', 'p1', 't1', 'n2', 'p2', 't2', 'n3', 'p3', 't3'];
-    campos.forEach(id => document.getElementById(id).addEventListener('input', calcular));
-
-    function calcular() {
-        const v = (id) => parseFloat(document.getElementById(id).value) || 0;
-        document.getElementById('rn').innerText = ((v('n1')+v('n2')+v('n3'))/3).toFixed(1);
-        document.getElementById('rp').innerText = ((v('p1')+v('p2')+v('p3'))/3).toFixed(1);
-        document.getElementById('rt').innerText = ((v('t1')+v('t2')+v('t3'))/3).toFixed(2);
-    }
+    campos.forEach(id => {
+        document.getElementById(id).addEventListener('input', () => {
+            const v = (id) => parseFloat(document.getElementById(id).value) || 0;
+            document.getElementById('rn').innerText = ((v('n1')+v('n2')+v('n3'))/3).toFixed(1);
+            document.getElementById('rp').innerText = ((v('p1')+v('p2')+v('p3'))/3).toFixed(1);
+            document.getElementById('rt').innerText = ((v('t1')+v('t2')+v('t3'))/3).toFixed(2);
+        });
+    });
 
     function saltar() {
         const actual = document.activeElement.id;
@@ -240,6 +218,5 @@
         document.getElementById(proximo).focus();
     }
 </script>
-
 </body>
 </html>
