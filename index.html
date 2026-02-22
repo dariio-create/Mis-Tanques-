@@ -3,126 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculadora Tanques Pro</title>
+    <title>Tanques Pro v3</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.cdnfonts.com/css/digital-numbers" rel="stylesheet">
     
     <style>
-        * { box-sizing: border-box; }
+        :root {
+            --azul-corp: #0033A0; /* Azul fuerte estándar */
+            --rojo-brillante: #FF0000;
+            --blanco: #FFFFFF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; padding: 10px; 
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-            /* Imagen de fondo que anexaste */
-            background: linear-gradient(rgba(0, 32, 91, 0.4), rgba(0, 32, 91, 0.4)), 
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+            /* Imagen de fondo con capa azulada */
+            background: linear-gradient(rgba(0, 51, 160, 0.3), rgba(0, 51, 160, 0.3)), 
                         url('https://r.jina.ai/i/9e006696700c406981882d2777f52554');
-            background-size: cover; background-position: center; background-attachment: fixed;
-        }
-        
-        .table-container { 
-            border: 3px solid #00205B; /* Azul Empresa */
-            width: 100%; max-width: 360px; 
-            background: rgba(255, 255, 255, 0.9); 
-            border-radius: 8px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background-size: cover;
+            background-position: center;
         }
 
-        .row { display: flex; border-bottom: 2px solid #00205B; height: 110px; }
-        .tank-label { 
-            flex: 1.2; display: flex; align-items: center; justify-content: center; 
-            font-size: 42px; font-weight: bold; color: #00205B;
-            border-right: 2px solid #00205B; background: #fff; 
+        .main-card {
+            width: 100%;
+            max-width: 380px;
+            border: 3px solid var(--azul-corp);
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
 
-        .inputs-col { flex: 2; display: flex; flex-direction: column; border-right: 2px solid #00205B; }
-        .input-wrapper { flex: 1; display: flex; border-bottom: 1px solid #00205B; background: #fff; }
-        .input-wrapper:last-child { border-bottom: none; }
-        .bg-red-soft { background-color: #ffebee; } /* Rojo muy suave para entrada */
-        
-        input { 
-            width: 100%; border: none; background: transparent; 
-            text-align: center; font-size: 26px; font-weight: bold; 
-            color: #00205B; outline: none; 
-        }
-        input:focus { background-color: #e3f2fd; border: 1px solid #ff0000; }
-
-        .units-col { flex: 0.6; display: flex; flex-direction: column; font-weight: bold; font-size: 18px; color: #00205B; background: #f0f0f0; }
-        .unit { flex: 1; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #00205B; }
-
-        /* RESULTADOS DIGITALES (10% más grandes, fondo 15% difuminado) */
-        .footer { display: flex; border-top: 1px solid #00205B; height: 85px; background: rgba(0, 0, 0, 0.85); }
-        .res-box { 
-            flex: 1; display: flex; align-items: center; justify-content: center; 
-            font-family: 'Digital Numbers', sans-serif; 
-            font-size: 32px; /* 10% más grande */
-            color: #ff0000; text-shadow: 0 0 15px #ff0000;
-            border-right: 1px solid #333; 
+        /* Filas de Tanques */
+        .row {
+            display: flex;
+            border-bottom: 2px solid var(--azul-corp);
+            height: 115px;
         }
 
-        /* ICONOS ACTUALIZADOS */
-        .icon-row { display: flex; height: 60px; background: #fff; border-top: 2px solid #00205B; }
-        .icon-box { flex: 1; display: flex; align-items: center; justify-content: center; border-right: 2px solid #00205B; }
-        .icon-box img { width: 38px; height: 38px; }
-        .icon-text { font-size: 30px; font-weight: bold; color: #ff0000; }
-
-        .btn-next { 
-            width: 100%; max-width: 360px; margin-top: 15px; padding: 20px; 
-            background: #00205B; color: white; border: 2px solid #fff; border-radius: 12px; 
-            font-size: 22px; font-weight: bold; text-transform: uppercase; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        .tank-header {
+            flex: 1;
+            background: var(--azul-corp);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            font-weight: bold;
         }
-        .btn-next:active { transform: translateY(3px); box-shadow: 0 2px #000; }
+
+        .input-group {
+            flex: 2.5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-cell {
+            flex: 1;
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            background: white;
+        }
+
+        .input-cell:last-child { border-bottom: none; }
+
+        .bg-rojo-claro { background-color: #fff1f1; }
+
+        input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            color: var(--azul-corp);
+            outline: none;
+        }
+
+        input:focus { background-color: #eef4ff; }
+
+        .labels-column {
+            flex: 0.7;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+            border-left: 1px solid var(--azul-corp);
+        }
+
+        .label-unit {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--azul-corp);
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* SECCIÓN DE RESULTADOS (Difuminado 15%) */
+        .results-area {
+            display: flex;
+            height: 90px;
+            background: rgba(0, 0, 0, 0.85); /* Fondo oscuro con 15% de transparencia real */
+            border-top: 2px solid var(--azul-corp);
+        }
+
+        .digital-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Digital Numbers', sans-serif;
+            font-size: 34px; /* Tamaño aumentado */
+            color: var(--rojo-brillante);
+            text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
+            border-right: 1px solid #444;
+        }
+
+        /* Iconos inferiores */
+        .icon-bar {
+            display: flex;
+            height: 55px;
+            background: var(--blanco);
+            border-top: 2px solid var(--azul-corp);
+        }
+
+        .icon-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--rojo-brillante);
+            border-right: 1px solid var(--azul-corp);
+        }
+
+        .icon-item img { width: 32px; height: 32px; }
+
+        /* Botón Siguiente */
+        .btn-action {
+            width: 100%;
+            max-width: 380px;
+            margin-top: 15px;
+            padding: 22px;
+            background: var(--azul-corp);
+            color: white;
+            border: 2px solid white;
+            border-radius: 12px;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn-action:active { transform: translateY(4px); box-shadow: 0 2px #000; }
     </style>
 </head>
 <body>
 
-<div class="table-container">
+<div class="main-card">
     <div class="row">
-        <div class="tank-label">T-1</div>
-        <div class="inputs-col">
-            <div class="input-wrapper bg-red-soft"><input type="number" inputmode="decimal" id="n1" placeholder="0"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p1" placeholder="0"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t1" placeholder="0"></div>
+        <div class="tank-header">T-1</div>
+        <div class="input-group">
+            <div class="input-cell bg-rojo-claro"><input type="number" inputmode="decimal" id="n1" placeholder="0"></div>
+            <div class="input-cell"><input type="number" inputmode="decimal" id="p1" placeholder="0"></div>
+            <div class="input-cell"><input type="number" inputmode="decimal" id="t1" placeholder="0"></div>
         </div>
-        <div class="units-col"><div class="unit">%</div><div class="unit">P</div><div class="unit">T</div></div>
-    </div>
-    <div class="row">
-        <div class="tank-label">T-2</div>
-        <div class="inputs-col">
-            <div class="input-wrapper bg-red-soft"><input type="number" inputmode="decimal" id="n2" placeholder="0"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p2" placeholder="0"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t2" placeholder="0"></div>
+        <div class="labels-column">
+            <div class="label-unit">%</div><div class="label-unit">P</div><div class="label-unit">T</div>
         </div>
-        <div class="units-col"><div class="unit">%</div><div class="unit">P</div><div class="unit">T</div></div>
-    </div>
-    <div class="row">
-        <div class="tank-label">T-3</div>
-        <div class="inputs-col">
-            <div class="input-wrapper bg-red-soft"><input type="number" inputmode="decimal" id="n3" placeholder="0"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="p3" placeholder="0"></div>
-            <div class="input-wrapper"><input type="number" inputmode="decimal" id="t3" placeholder="0"></div>
-        </div>
-        <div class="units-col"><div class="unit">%</div><div class="unit">P</div><div class="unit">T</div></div>
     </div>
 
-    <div class="footer">
-        <div class="res-box" id="rn">0.0</div>
-        <div class="res-box" id="rp">0.0</div>
-        <div class="res-box" id="rt">0.0</div>
+    <div class="row">
+        <div class="tank-header">T-2</div>
+        <div class="input-group">
+            <div class="input-cell bg-rojo-claro"><input type="number" inputmode="decimal" id="n2" placeholder="0"></div>
+            <div class="input-cell"><input type="number" inputmode="decimal" id="p2" placeholder="0"></div>
+            <div class="input-cell"><input type="number" inputmode="decimal" id="t2" placeholder="0"></div>
+        </div>
+        <div class="labels-column">
+            <div class="label-unit">%</div><div class="label-unit">P</div><div class="label-unit">T</div>
+        </div>
     </div>
-    
-    <div class="icon-row">
-        <div class="icon-box"><span class="icon-text">%</span></div>
-        <div class="icon-box"><img src="https://img.icons8.com/ios-filled/50/00205B/pressure.png"></div>
-        <div class="icon-box" style="font-size:30px">🌡️</div>
+
+    <div class="row">
+        <div class="tank-header">T-3</div>
+        <div class="input-group">
+            <div class="input-cell bg-rojo-claro"><input type="number" inputmode="decimal" id="n3" placeholder="0"></div>
+            <div class="input-cell"><input type="number" inputmode="decimal" id="p3" placeholder="0"></div>
+            <div class="input-cell"><input type="number" inputmode="decimal" id="t3" placeholder="0"></div>
+        </div>
+        <div class="labels-column">
+            <div class="label-unit">%</div><div class="label-unit">P</div><div class="label-unit">T</div>
+        </div>
+    </div>
+
+    <div class="results-area">
+        <div class="digital-box" id="rn">0.0</div>
+        <div class="digital-box" id="rp">0.0</div>
+        <div class="digital-box" id="rt">0.0</div>
+    </div>
+
+    <div class="icon-bar">
+        <div class="icon-item">%</div>
+        <div class="icon-item"><img src="https://img.icons8.com/ios-filled/50/FF0000/pressure.png"></div>
+        <div class="icon-item">🌡️</div>
     </div>
 </div>
 
-<button class="btn-next" onclick="siguienteCelda()">Siguiente Celda</button>
+<button class="btn-action" onclick="saltar()">Siguiente Celda</button>
 
 <script>
-    const ids = ['n1', 'p1', 't1', 'n2', 'p2', 't2', 'n3', 'p3', 't3'];
-    ids.forEach(id => document.getElementById(id).addEventListener('input', calcular));
+    const campos = ['n1', 'p1', 't1', 'n2', 'p2', 't2', 'n3', 'p3', 't3'];
+    campos.forEach(id => document.getElementById(id).addEventListener('input', calcular));
 
     function calcular() {
         const v = (id) => parseFloat(document.getElementById(id).value) || 0;
@@ -131,12 +233,13 @@
         document.getElementById('rt').innerText = ((v('t1')+v('t2')+v('t3'))/3).toFixed(2);
     }
 
-    function siguienteCelda() {
-        const activo = document.activeElement.id;
-        const index = ids.indexOf(activo);
-        const next = ids[index + 1] || ids[0];
-        document.getElementById(next).focus();
+    function saltar() {
+        const actual = document.activeElement.id;
+        const index = campos.indexOf(actual);
+        const proximo = campos[index + 1] || campos[0];
+        document.getElementById(proximo).focus();
     }
 </script>
+
 </body>
 </html>
